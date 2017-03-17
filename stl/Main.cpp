@@ -9,5 +9,6 @@ using namespace std;
 
 int main()
 {
+	// fine
 	return 0;
 }
