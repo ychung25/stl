@@ -32,6 +32,20 @@ namespace mystd {
 		{
 			return _size;
 		}
+		void swap(const list<T>& l)
+		{
+			T* headTemp = l._head;
+			T* tailTemp = l._tail;
+			unsigned int sizeTemp = l._size;
+
+			l._head = _head;
+			l._tail = _tail;
+			l._size = _size;
+
+			_head = headTemp;
+			_tail = tailTemp;
+			_size = sizeTemp;
+		}
 
 		T& front()
 		{
@@ -260,23 +274,7 @@ namespace mystd {
 
 		}
 
-		void swap(const list<T>& l)
-		{
-			T* headTemp = l._head;
-			T* tailTemp = l._tail;
-			unsigned int sizeTemp = l._size;
-
-			l._head = _head;
-			l._tail = _tail;
-			l._size = _size;
-
-			_head = headTemp;
-			_tail = tailTemp;
-			_size = sizeTemp;
-		}
-
 	private:
-
 		Node<T>* _head = nullptr;
 		Node<T>* _tail = nullptr;
 		unsigned int _size = 0;
