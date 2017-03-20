@@ -25,27 +25,17 @@ public:
 			_elements[i] = arg;
 		}
 	}
-	vector(vector<T>& v)
+	vector(const vector<T>& v)
 	{	
 		init(v.size());
 		copy(v);
-	}
-	vector(vector<T>&& v)
-	{
-		_elements = v._elements;
-		_size = v._size;
-		_capacity = v._capacity;
-
-		v._elements = nullptr;
-		v._size = 0;
-		v._capacity = 0;
 	}
 	~vector()
 	{
 		reset();
 	}
 
-	vector<T>& operator=(vector<T>& v)
+	vector<T>& operator=(vector<T> v)
 	{
 		reset();
 		init(v.size());
@@ -53,66 +43,57 @@ public:
 
 		return *this;
 	}
-	vector<T>& operator=(vector<T>&& v)
-	{
-		reset();
-		_elements = v._elements;
-		_size = v._size;
-		_capacity = v._capacity;
 
-		v._elements = nullptr;
-		v._size = 0;
-		v._capacity = 0;
-
-		return *this;
-	}
 	T& operator[](int index)
 	{
 		return _elements[index];
 	}
 
-	void clear()
-	{
-		reset();
-	}
-
 	void push_back(T arg)
 	{
-		if (_size == _capacity)
-		{
-			// TODO : Handle _size = 0;
-			if (_capacity == 0)
-			{
-				_capacity = 1;
-			}
-
-			unsigned int newCapacity = _capacity * 2;
-			T* newElements = new T[newCapacity];
-			for (int i = 0; i < _size; i++)
-			{
-				newElements[i] = _elements[i];
-			}
-			delete[] _elements;
-			_elements = newElements;
-			_capacity = newCapacity;
-			
-		}
-		
+		increaseCapacityIfNeeded();
 		_elements[_size] = arg;
 		_size++;
 	}
-
 	void pop_back()
 	{
-		if (_size > 0)
-		{
-			_size--;
-		}
+		_size--;
 	}
 
-	//void insert(vectorIterator<T>& iter, T)
-	
-	void swap(vector<T>& v)
+	void insert(vectorIterator<T> iter, T arg)
+	{
+		increaseCapacityIfNeeded();
+
+		unsigned int pos = iter._pos;
+		T* newElements = new T[_capacity];
+
+		for (int i = 0; i < _size; i++)
+		{
+			if (i < pos)
+			{
+				newElements[i] = _elements[i];
+			}
+			else
+			{
+				newElements[i + 1] = _elements[i];
+			}
+		}
+		newElements[pos] = arg;
+		delete[] _elements;
+		_elements = newElements;
+		_size++;
+	}
+	void erase(vectorIterator<T> iter)
+	{
+		unsigned int pos = iter._pos;
+		for (int i = pos; i < _size-1; i++)
+		{
+			_elements[i] = _elements[i + 1];
+		}
+		_size--;
+	}
+
+	void swap(vector<T> v)
 	{
 		T* tempElements = _elements;
 		unsigned int tempSize = _size;
@@ -126,6 +107,11 @@ public:
 		v._size = tempSize;
 		v._capacity = tempCapacity;
 	}
+	void clear()
+	{
+		reset();
+	}
+
 	unsigned int size()
 	{
 		return _size;
@@ -179,6 +165,27 @@ private:
 		}
 	}
 
+	void increaseCapacityIfNeeded()
+	{
+		if (_size == _capacity)
+		{
+			if (_capacity == 0)
+			{
+				_capacity = 1;
+			}
+
+			unsigned int newCapacity = _capacity * 2;
+			T* newElements = new T[newCapacity];
+			for (int i = 0; i < _size; i++)
+			{
+				newElements[i] = _elements[i];
+			}
+			delete[] _elements;
+			_elements = newElements;
+			_capacity = newCapacity;
+		}
+	}
+
 	T* _elements;
 	unsigned int _size;
 	unsigned int _capacity;
@@ -206,30 +213,32 @@ public:
 	}
 	vectorIterator<T> operator ++ (int)
 	{
+		vectorIterator<T> temp(_vector, pos);
 		_pos++;
-		return *this;
+		return temp;
 	}
 	vectorIterator<T> operator -- (int)
 	{
+		vectorIterator<T> temp(_vector, pos);
 		_pos--;
-		return *this;
+		return temp;
 	}
-	bool operator == (vectorIterator<T>& iter)
+	bool operator == (vectorIterator<T> iter)
 	{
 		if (_pos == iter._pos)
 			return true;
 		return false;
 	}
-	bool operator != (vectorIterator<T>& iter)
+	bool operator != (vectorIterator<T> iter)
 	{
-		if (_pos != iter._pos)
-			return true;
-		return false;
+		return !(*this == iter);
 	}
 
 private:
 	unsigned int _pos;
 	vector<T>& _vector;
+
+	friend class vector<T>;
 };
 
 }
