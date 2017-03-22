@@ -145,7 +145,11 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MyDeque.h" />
+    <ClInclude Include="MyForward_list.h" />
     <ClInclude Include="MyList.h" />
+    <ClInclude Include="MyQueue.h" />
+    <ClInclude Include="MyStack.h" />
     <ClInclude Include="MyVector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

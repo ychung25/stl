@@ -123,11 +123,11 @@ public:
 
 	vectorIterator<T> begin()
 	{
-		return vectorIterator<T>(*this, 0);
+		return vectorIterator<T>(_elements, 0);
 	}
 	vectorIterator<T> end()
 	{
-		return vectorIterator<T>(*this, _size);
+		return vectorIterator<T>(_elements, _size);
 	}
 
 private:
@@ -197,7 +197,7 @@ template <typename T>
 class vectorIterator
 {
 public:
-	vectorIterator(vector<T>& vector, unsigned int pos) : 
+	vectorIterator(T* vector, unsigned int pos) : 
 		_vector(vector), 
 		_pos(pos) 
 	{
@@ -213,13 +213,13 @@ public:
 	}
 	vectorIterator<T> operator ++ (int)
 	{
-		vectorIterator<T> temp(_vector, pos);
+		vectorIterator<T> temp(_vector, _pos);
 		_pos++;
 		return temp;
 	}
 	vectorIterator<T> operator -- (int)
 	{
-		vectorIterator<T> temp(_vector, pos);
+		vectorIterator<T> temp(_vector, _pos);
 		_pos--;
 		return temp;
 	}
@@ -236,7 +236,7 @@ public:
 
 private:
 	unsigned int _pos;
-	vector<T>& _vector;
+	T* _vector;
 
 	friend class vector<T>;
 };
