@@ -32,20 +32,13 @@ namespace mystd {
         void swap(priority_queue<T>& pq)
         {
             _elements.swap(pq._elements);
-
-            unsigned int tempSize = _size;
-            _size = pq._size;
-            pq._size = tempSize;
-
-            std::function<bool(const T& a, const T& b)> tempComparator = _comparator;
-            _comparator = pq._comparator;
-            pq._comparator = tempComparator;
-
+			swap(_size, pq._size);
+			swap(_comparator, pq._comparator);
         }
 
         T& top()
         {
-            return _elements.front();
+			return _elements[0];
         }
         void push(const T& t)
         {
@@ -63,7 +56,10 @@ namespace mystd {
         }
         void pop()
         {
+			_elements[0] = _elements[_size-1];
+			--_size;
 
+			heapifydown(0);
         }
 
     private:
@@ -71,19 +67,68 @@ namespace mystd {
         unsigned int _size = 0;
         std::function<bool(const T& a, const T& b)> _comparator;
 
-        void heapifyup(unsigned int current)
+		void swap(T& a, T& b)
+		{
+			T temp = a;
+			a = b;
+			b = temp;
+		}
+
+		bool IsInRange(unsigned int i)
+		{
+			if (i < _size)
+				return true;
+			return false;
+		}
+
+        void heapifyup(unsigned int currentPos)
         {
-            if (current == 0) { return; }
+            if (currentPos == 0) { return; }
             
-            unsigned int parent = (current - 1) / 2;
-            if (_comparator(current, parent)) { return;  }
+            unsigned int parentPos = (currentPos - 1) / 2;
+            if (_comparator(_elements[currentPos], _elements[parentPos])) { return;  }
 
-            T tempVal = _elements[parent];
-            _elements[parent] = _elements[current];
-            _elements[current] = tempVal;
+			swap(_elements[parentPos], _elements[currentPos]);
 
-            heapifyup(parent);
+            heapifyup(parentPos);
         }
 
+		void heapifydown(unsigned int currentPos)
+		{
+			unsigned int leftChildPos = (currentPos * 2) + 1;
+			unsigned int rightChildPos = (currentPos * 2) + 2;
+
+			if (!IsInRange(leftChildPos) && !IsInRange(rightChildPos)) // no children
+			{
+				return; 
+			}
+			else if (IsInRange(leftChildPos) && IsInRange(rightChildPos)) // have both children
+			{
+				if (_comparator(_elements[rightChildPos], _elements[leftChildPos]))
+				{
+					if (_comparator(_elements[currentPos], _elements[leftChildPos]))
+					{
+						swap(_elements[currentPos], _elements[leftChildPos]);
+						heapifydown(leftChildPos);
+					}
+				}
+				else
+				{
+					if (_comparator(_elements[currentPos], _elements[rightChildPos]))
+					{
+						swap(_elements[currentPos], _elements[rightChildPos]);
+						heapifydown(rightChildPos);
+					}
+				}
+			}
+			else // only left child
+			{
+				if (_comparator(_elements[currentPos], _elements[leftChildPos]))
+				{
+					swap(_elements[currentPos], _elements[leftChildPos]);
+					heapifydown(leftChildPos);
+				}
+			}
+		}
     };
 }

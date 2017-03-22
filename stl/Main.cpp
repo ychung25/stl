@@ -27,16 +27,26 @@ using namespace mystd;
 
 int main()
 {
-    priority_queue<int> pq;
-    srand(time(NULL));
+	priority_queue<int> pq([](const int& a, const int& b)
+	{
+		// default to max heap
+		if (a > b)
+			return true;
+		return false;
+	});
 
-    for (int i = 0; i < 100; i++)
+	srand(time(NULL));
+    for (int i = 0; i < 50; i++)
     {
         pq.push(rand() % 10000);
     }
 
     unsigned int size = pq.size();
-    int top = pq.top();
+	while (pq.size() != 0)
+	{
+		printf("%d, ", pq.top());
+		pq.pop();
+	}
 
  	return 0;
 }
