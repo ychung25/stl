@@ -148,6 +148,7 @@
     <ClInclude Include="MyDeque.h" />
     <ClInclude Include="MyForward_list.h" />
     <ClInclude Include="MyList.h" />
+    <ClInclude Include="MyPriority_queue.h" />
     <ClInclude Include="MyQueue.h" />
     <ClInclude Include="MyStack.h" />
     <ClInclude Include="MyVector.h" />

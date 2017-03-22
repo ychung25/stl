@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <iostream>
 #include <string>
 
@@ -17,47 +18,25 @@
 #include "MyForward_list.h"
 #include "MyStack.h"
 #include "MyQueue.h"
+#include "MyPriority_queue.h"
+
 using namespace mystd;
 
-void print(forward_list<int>& vec)
-{
-	for (auto iter = vec.begin(); iter != vec.end(); iter++)
-	{
-		printf("%d, ", *iter);
-	}
-	std::cout << "\n";
-}
 
 
 
 int main()
 {
-	forward_list<int> v;
+    priority_queue<int> pq;
+    srand(time(NULL));
 
-	v.push_front(1);
-	v.pop_front();
-	v.push_front(40);
-	v.push_front(30);
-	v.push_front(20);
-	v.push_front(10);
-	// 10, 20, 30, 40
+    for (int i = 0; i < 100; i++)
+    {
+        pq.push(rand() % 10000);
+    }
 
-
-	auto iter = v.insert_after(v.before_begin(), 5);
-	// 5, 10, 20, 30, 40. iter points to 5
-	iter = v.insert_after(iter, 4);
-	// 5, 4, 10, 20, 30, 40
-
-
-	while (v.erase_after(iter) != v.end())
-	{
-	}
-
-
-	print(v);
-
-
-
+    unsigned int size = pq.size();
+    int top = pq.top();
 
  	return 0;
 }
