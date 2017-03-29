@@ -150,6 +150,7 @@
     <ClInclude Include="MyList.h" />
     <ClInclude Include="MyPriority_queue.h" />
     <ClInclude Include="MyQueue.h" />
+    <ClInclude Include="MySet.h" />
     <ClInclude Include="MyStack.h" />
     <ClInclude Include="MyVector.h" />
   </ItemGroup>

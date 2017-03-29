@@ -22,17 +22,15 @@ namespace mystd {
 
         unsigned int size()
         {
-            return _size;
+            return _elements.size();
         }
         void clear()
         {
             _elements.clear();
-            _size = 0;
         }
         void swap(priority_queue<T>& pq)
         {
             _elements.swap(pq._elements);
-			swap(_size, pq._size);
 			swap(_comparator, pq._comparator);
         }
 
@@ -42,29 +40,19 @@ namespace mystd {
         }
         void push(const T& t)
         {
-            if (_size == _elements.size())
-            {
-                _elements.push_back(t);
-                ++_size;
-            }
-            else
-            {
-                _elements[_size++] = t;
-            }
-
-            heapifyup(_size - 1);
+            _elements.push_back(t);
+            heapifyup(size() - 1);
         }
         void pop()
         {
-			_elements[0] = _elements[_size-1];
-			--_size;
+			_elements[0] = _elements[size()-1];
+			_elements.pop_back();
 
 			heapifydown(0);
         }
 
     private:
         std::vector<T> _elements;
-        unsigned int _size = 0;
         std::function<bool(const T& a, const T& b)> _comparator;
 
 		void swap(T& a, T& b)
@@ -76,7 +64,7 @@ namespace mystd {
 
 		bool IsInRange(unsigned int i)
 		{
-			if (i < _size)
+			if (i < _elements.size())
 				return true;
 			return false;
 		}

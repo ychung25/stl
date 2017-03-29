@@ -2,6 +2,7 @@
 #include <time.h>
 #include <iostream>
 #include <string>
+#include <utility>
 
 //#include <vector>
 //#include <deque>
@@ -10,6 +11,7 @@
 //
 //#include <stack>
 //#include <queue>
+//#include <set>
 //using namespace std;
 
 #include "MyVector.h"
@@ -19,34 +21,18 @@
 #include "MyStack.h"
 #include "MyQueue.h"
 #include "MyPriority_queue.h"
+#include "MySet.h"
 
 using namespace mystd;
 
 
 
 
+
+
 int main()
 {
-	priority_queue<int> pq([](const int& a, const int& b)
-	{
-		// default to max heap
-		if (a > b)
-			return true;
-		return false;
-	});
 
-	srand(time(NULL));
-    for (int i = 0; i < 50; i++)
-    {
-        pq.push(rand() % 10000);
-    }
-
-    unsigned int size = pq.size();
-	while (pq.size() != 0)
-	{
-		printf("%d, ", pq.top());
-		pq.pop();
-	}
-
+	int* ar = new int[10];
  	return 0;
 }

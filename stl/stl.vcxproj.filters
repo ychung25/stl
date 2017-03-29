@@ -41,5 +41,8 @@
     <ClInclude Include="MyPriority_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MySet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
